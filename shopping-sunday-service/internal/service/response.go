@@ -9,3 +9,7 @@ type Reason struct {
 	Message string `json:"message"`
 	Id      int    `json:"id"`
 }
+
+type ErrorResponse struct {
+	Message string `json:"message"`
+}

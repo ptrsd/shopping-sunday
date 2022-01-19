@@ -13,13 +13,26 @@ export const ShoppingSundayBlock = (props) => {
 
     const checkIfShoppingSunday = async (d) => {
         await fetch("http://localhost:8080/sunday/" + d)
-            .then(res => res.json())
+            .then(response => {
+                if (!response.ok) {
+                    return Promise.reject(response.status);
+                }
+                return response.json();
+            })
             .then(result => {
                 setIsShoppingSunday(result.isShoppingSunday);
                 if (Array.isArray(result.reasons) && result.reasons.length) {
                     setReasons(result.reasons)
                 }
-            });
+            })
+            .catch(err => {
+                setIsShoppingSunday(false);
+                if (err == 422) {
+                    setReasons([{id: "incorrectFormatError"}])
+                } else {
+                    setReasons([{id: "unknownError"}])
+                }
+            })
     };
 
     const buildReasonSection = () => {

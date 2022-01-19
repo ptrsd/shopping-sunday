@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"shopping-sunday-service/pkg/sunday"
@@ -15,15 +16,31 @@ type RestApi struct {
 func (server *RestApi) Start() error {
 	router := mux.NewRouter()
 	router.HandleFunc("/sunday/{date}", CalculatorHandler)
+	router.HandleFunc("/sunday", CalculatorHandler)
 	return http.ListenAndServe(":"+server.Config.Port, router)
 }
 
 func CalculatorHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	date := vars["date"]
-	parsedDate, err := time.Parse(sunday.ShoppingSundayFormat, date)
-	if err != nil {
+	var parsedDate time.Time
+	var parseErr error
+
+	if date, ok := mux.Vars(r)["date"]; ok {
+		parsedDate, parseErr = time.Parse(sunday.ShoppingSundayFormat, date)
+	} else {
+		parsedDate = time.Now()
+	}
+
+	if parseErr != nil {
+		errorResponse := ErrorResponse{fmt.Sprintf("selected date has invalid format, expected format %s", sunday.ShoppingSundayFormat)}
+		errorBody, err := json.Marshal(errorResponse)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.WriteHeader(http.StatusUnprocessableEntity)
+		w.Write(errorBody)
 		return
 	}
 
