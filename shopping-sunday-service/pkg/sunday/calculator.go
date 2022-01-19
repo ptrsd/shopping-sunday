@@ -16,7 +16,7 @@ func IsShopping(date time.Time) (isShopping bool, reasons []Reason) {
 	for _, check := range checks {
 		isShopping, reason := check.Calculate(date)
 		if isShopping {
-			return isShopping, nil
+			return isShopping, []Reason{}
 		}
 		reasons = append(reasons, reason)
 	}
