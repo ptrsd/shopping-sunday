@@ -2,5 +2,10 @@ package service
 
 type ShoppingSundayResponse struct {
 	IsShoppingSunday bool     `json:"isShoppingSunday"`
-	Reasons          []string `json:"reasons"`
+	Reasons          []Reason `json:"reasons"`
+}
+
+type Reason struct {
+	Message string `json:"message"`
+	Id      int    `json:"id"`
 }

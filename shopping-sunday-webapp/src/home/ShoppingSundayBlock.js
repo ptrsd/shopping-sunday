@@ -21,7 +21,7 @@ export const ShoppingSundayBlock = (props) => {
 
     const buildReasonSection = () => {
         if (reasons.length) {
-            return reasons.map(reason => <p>{reason}</p>)
+            return reasons.map(reason => <p>{reason.message}</p>)
         } else {
             return <p>Ciesz się zakupami!</p>
         }

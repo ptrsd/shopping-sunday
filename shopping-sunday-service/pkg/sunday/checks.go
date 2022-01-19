@@ -6,10 +6,6 @@ import (
 
 const weekInDays = 7
 
-type Reason struct {
-	Message string
-}
-
 type checkDate interface {
 	Calculate(time time.Time) (bool, Reason)
 }
@@ -20,7 +16,7 @@ type isSunday struct {
 func (i isSunday) Calculate(date time.Time) (bool, Reason) {
 	result := time.Sunday == date.Weekday()
 	if !result {
-		return result, Reason{"is not a Sunday"}
+		return result, isNotSunday
 	}
 	return result, Reason{}
 }
@@ -29,12 +25,12 @@ type isLastSundayOfMonth struct{}
 
 func (i isLastSundayOfMonth) Calculate(date time.Time) (bool, Reason) {
 	if !i.monthWithin(date, []time.Month{time.January, time.April, time.June, time.August}) {
-		return false, Reason{"month is not equal to January, April, June, August"}
+		return false, monthNotValid
 	}
 
 	addDate := date.AddDate(0, 0, 7)
 	if !(time.Sunday == date.Weekday() && addDate.Month() != date.Month()) {
-		return false, Reason{"the day is not a last Sunday of month"}
+		return false, notLastSundayOfMonth
 	}
 	return true, Reason{}
 }
@@ -51,23 +47,23 @@ func (i isLastSundayOfMonth) monthWithin(date time.Time, months []time.Month) bo
 type beforeChristmas struct{}
 
 func (b beforeChristmas) Calculate(date time.Time) (bool, Reason) {
-	christmas := time.Date(date.Year(), time.December, 25, 0, 0, 0, 0, date.Location())
+	christmas := time.Date(date.Year(), time.December, 24, 0, 0, 0, 0, date.Location())
 	daysBeforeChristmas := -1 * int(christmas.Weekday())
 	sundayBefore := christmas.AddDate(0, 0, daysBeforeChristmas)
 	twoSundaysBefore := christmas.AddDate(0, 0, daysBeforeChristmas-weekInDays)
 	if !(date.Equal(sundayBefore) || date.Equal(twoSundaysBefore)) {
-		return false, Reason{"is not within two Sundays before Christmas"}
+		return false, notBeforeChristmas
 	}
 	return true, Reason{}
 }
 
-type beforeEaster struct {}
+type beforeEaster struct{}
 
 func (b beforeEaster) Calculate(date time.Time) (bool, Reason) {
 	easter := b.easterForYear(date)
 	sundayBefore := easter.AddDate(0, 0, -int(easter.Weekday())-weekInDays)
 	if !date.Equal(sundayBefore) {
-		return false, Reason{"is not a Sunday before Easter"}
+		return false, notBeforeEaster
 	}
 	return true, Reason{}
 }

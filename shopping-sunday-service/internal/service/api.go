@@ -2,7 +2,6 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"shopping-sunday-service/pkg/sunday"
@@ -24,15 +23,14 @@ func CalculatorHandler(w http.ResponseWriter, r *http.Request) {
 	date := vars["date"]
 	parsedDate, err := time.Parse(sunday.ShoppingSundayFormat, date)
 	if err != nil {
-		fmt.Println(err.Error())
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
 
-	var reasonsList []string
+	var reasonsList []Reason
 	shopping, reasons := sunday.IsShopping(parsedDate)
 	for _, reason := range reasons {
-		reasonsList = append(reasonsList, reason.Message)
+		reasonsList = append(reasonsList, Reason{reason.Message, reason.Id})
 	}
 
 	response := ShoppingSundayResponse{IsShoppingSunday: shopping, Reasons: reasonsList}
