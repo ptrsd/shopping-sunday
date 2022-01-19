@@ -27,7 +27,7 @@ export const ShoppingSundayBlock = (props) => {
             })
             .catch(err => {
                 setIsShoppingSunday(false);
-                if (err == 422) {
+                if (err === 422) {
                     setReasons([{id: "incorrectFormatError"}])
                 } else {
                     setReasons([{id: "unknownError"}])
