@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
+import "../translations/i18n";
 
 export const ShoppingSundayBlock = (props) => {
+    const {t} = useTranslation();
     let [isShoppingSunday, setIsShoppingSunday] = useState(false);
     let [reasons, setReasons] = useState([]);
 
@@ -21,9 +24,9 @@ export const ShoppingSundayBlock = (props) => {
 
     const buildReasonSection = () => {
         if (reasons.length) {
-            return reasons.map(reason => <p>{reason.message}</p>)
+            return reasons.map((reason, idx) => <p key={idx}>{t(reason.id)}</p>)
         } else {
-            return <p>Ciesz się zakupami!</p>
+            return <p key={0}>{t("enjoyShopping")}</p>
         }
     };
 
@@ -32,7 +35,7 @@ export const ShoppingSundayBlock = (props) => {
             <div className="col-md-12 text-center">
                 <div className="box">
                     <div className="box-content">
-                        <h1 className="tag-title">{isShoppingSunday ? "Tak" : "Nie"}</h1>
+                        <h1 className="tag-title">{isShoppingSunday ? t("isShoppingSunday") : t("notShoppingSunday")}</h1>
                         <hr/>
                         {
                             buildReasonSection()

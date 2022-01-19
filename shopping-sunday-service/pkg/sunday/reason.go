@@ -16,7 +16,7 @@ var (
 	}
 	notLastSundayOfMonth = Reason{
 		Id:      3,
-		Message: "the day is not a last Sunday of month",
+		Message: "the day is not the last Sunday of month",
 	}
 	notBeforeChristmas = Reason{
 		Id:      4,
