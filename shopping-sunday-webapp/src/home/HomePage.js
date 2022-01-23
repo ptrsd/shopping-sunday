@@ -14,7 +14,7 @@ export const HomePage = () => {
                 <div className="row">
                     <h2 className="text-center">{t("title")}</h2>
                     <div className="row">
-                        <ShoppingSunday date={date}/>
+                        <ShoppingSunday date={date ? date : (new Date()).toISOString().split("T")[0]}/>
                     </div>
                 </div>
             </div>

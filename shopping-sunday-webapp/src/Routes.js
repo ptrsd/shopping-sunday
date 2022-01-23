@@ -7,6 +7,7 @@ export const RoutesList = () => {
         <BrowserRouter>
             <Routes>
                 <Route exact path="/:date" element={<HomePage/>}></Route>
+                <Route exact path="/" element={<HomePage/>}></Route>
             </Routes>
         </BrowserRouter>
     );
