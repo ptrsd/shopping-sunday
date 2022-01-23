@@ -1,6 +1,6 @@
 import React from "react";
 import {useParams} from "react-router-dom";
-import {ShoppingSundayBlock} from "./ShoppingSundayBlock";
+import {ShoppingSunday} from "./ShoppingSunday";
 import {useTranslation} from "react-i18next";
 import "../translations/i18n";
 
@@ -14,7 +14,7 @@ export const HomePage = () => {
                 <div className="row">
                     <h2 className="text-center">{t("title")}</h2>
                     <div className="row">
-                        <ShoppingSundayBlock date={date}/>
+                        <ShoppingSunday date={date}/>
                     </div>
                 </div>
             </div>

@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {useTranslation} from "react-i18next";
-import "../translations/i18n";
+import {ShoppingSundayPanel} from "./ShoppingSundayPanel";
 
-export const ShoppingSundayBlock = (props) => {
-    const {t} = useTranslation();
+export const ShoppingSunday = (props) => {
     let [isShoppingSunday, setIsShoppingSunday] = useState(false);
     let [reasons, setReasons] = useState([]);
 
@@ -35,27 +33,7 @@ export const ShoppingSundayBlock = (props) => {
             })
     };
 
-    const buildReasonSection = () => {
-        if (reasons.length) {
-            return reasons.map((reason, idx) => <p key={idx}>{t(reason.id)}</p>)
-        } else {
-            return <p key={0}>{t("enjoyShopping")}</p>
-        }
-    };
-
     return (
-        <>
-            <div className="col-md-12 text-center">
-                <div className="box">
-                    <div className="box-content">
-                        <h1 className="tag-title">{isShoppingSunday ? t("isShoppingSunday") : t("notShoppingSunday")}</h1>
-                        <hr/>
-                        {
-                            buildReasonSection()
-                        }
-                    </div>
-                </div>
-            </div>
-        </>
+        <ShoppingSundayPanel details={reasons} isShoppingSunday={isShoppingSunday}/>
     )
 }
